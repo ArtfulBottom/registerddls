@@ -1,5 +1,6 @@
 CREATE EXTENSION "uuid-ossp";
 
+-- Create product table code.
 CREATE TABLE product (
   id uuid NOT NULL,
   lookupcode character varying(32) NOT NULL DEFAULT(''),
@@ -36,6 +37,7 @@ INSERT INTO product VALUES (
      , current_timestamp
 );
 
+-- Create employee table code.
 CREATE TABLE employee (
   id uuid NOT NULL,
   employeeid character varying(32) NOT NULL DEFAULT(''),
@@ -55,3 +57,36 @@ CREATE INDEX ix_employee_employeeid
   ON employee
   USING hash(employeeid);
 
+-- Alter product table code.
+alter table product add column price numeric(18, 4) default ((0));
+alter table product alter column price set NOT NULL;
+
+alter table product add column active boolean default (TRUE);
+alter table product alter column active set NOT NULL;
+
+-- Create transaction table code.
+create type transactionkind as enum ('sale', 'return');
+
+create table transaction (
+       id uuid not null,
+       cashierid serial not null,
+       totalamount numeric(20, 4) not null default((0)),
+       transactiontype transactionkind not null default ('sale'), 
+       createdon timestamp without time zone not null default now(),
+       referenceid uuid default null, 
+       constraint pk_transaction_recordid primary key (id),
+       constraint uk_transaction_cashierid unique(cashierid)
+) with (
+  oids=false
+);
+
+-- Create transaction entry table code.
+create table transaction_entry (
+       id uuid not null,
+       productid uuid[] not null,
+       quantity int[] not null,
+       unitprice numeric(18,4)[] not null, 
+       constraint pk_transaction_entry_recordid primary key (id)
+) with (
+  oids=false
+);
