@@ -69,7 +69,7 @@ create type transactionkind as enum ('sale', 'return');
 
 create table transaction (
        id uuid not null,
-       cashierid serial not null,
+       cashierid uuid not null,
        totalamount numeric(20, 4) not null default((0)),
        transactiontype transactionkind not null default ('sale'), 
        createdon timestamp without time zone not null default now(),
