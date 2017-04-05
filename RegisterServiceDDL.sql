@@ -65,13 +65,12 @@ alter table product add column active boolean default (TRUE);
 alter table product alter column active set NOT NULL;
 
 -- Create transaction table code.
-create type transactionkind as enum ('sale', 'return');
 
 create table transaction (
        id uuid not null,
        cashierid uuid not null,
        totalamount numeric(20, 4) not null default((0)),
-       transactiontype transactionkind not null default ('sale'), 
+       classification int not null default(0),
        createdon timestamp without time zone not null default now(),
        referenceid uuid default null, 
        constraint pk_transaction_recordid primary key (id),
