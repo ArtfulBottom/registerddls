@@ -79,13 +79,22 @@ create table transaction (
   oids=false
 );
 
+CREATE INDEX ix_transaction_cashierid
+  ON transaction
+  USING hash(cashierid);
+
 -- Create transaction entry table code.
 create table transaction_entry (
        id uuid not null,
-       productid uuid[] not null,
-       quantity int[] not null,
+       transactionid uuid not null,
+       productid uuid not null,
+       quantity int not null,
        unitprice numeric(18,4)[] not null, 
        constraint pk_transaction_entry_recordid primary key (id)
 ) with (
   oids=false
 );
+
+CREATE INDEX ix_transaction_entry_transactionid
+  ON transaction_entry
+  USING hash(transactionid);
