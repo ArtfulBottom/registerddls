@@ -89,7 +89,7 @@ create table transaction_entry (
        transactionid uuid not null,
        productid uuid not null,
        quantity int not null,
-       unitprice numeric(18,4)[] not null, 
+       unitprice numeric(18,4) not null, 
        constraint pk_transaction_entry_recordid primary key (id)
 ) with (
   oids=false
