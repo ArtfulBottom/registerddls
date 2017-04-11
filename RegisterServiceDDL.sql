@@ -73,8 +73,7 @@ create table transaction (
        classification int not null default(0),
        createdon timestamp without time zone not null default now(),
        referenceid uuid default null, 
-       constraint pk_transaction_recordid primary key (id),
-       constraint uk_transaction_cashierid unique(cashierid)
+       constraint pk_transaction_recordid primary key (id)
 ) with (
   oids=false
 );
